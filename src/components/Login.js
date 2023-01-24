@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Login = (props) => {
   let navigate = useNavigate();
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   
+  // useEffect(() => {
+  //   if(localStorage.setItem('token')){
+  //     navigate('/');
+  //   }
+  // }, [])
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch("http://localhost:5000/api/auth/login", {
@@ -17,12 +24,13 @@ const Login = (props) => {
       }),
     });
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     if(json.success){
       //Save the auth token and redirect
-       localStorage.setItem('token',json.authtoken)
-       navigate("/")
+      // console.log("Req "+json.authToken)
+       localStorage.setItem('token',json.authToken)
        props.showAlert("Logged in Successfully","success")
+       navigate('/');
     }
     else{
       props.showAlert("Invalid credentials","danger")
@@ -34,8 +42,9 @@ const Login = (props) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="container" style={{maxWidth:'500px'}}>
+      <h1  className="mb-5">Welcome back,</h1>
+      <form onSubmit={handleSubmit} >
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Email address
@@ -67,9 +76,16 @@ const Login = (props) => {
           />
         </div>
         <button type="submit" className="btn btn-primary">
-          Submit
+          Login
         </button>
       </form>
+      <div className="mt-4">
+        Don't have an account ?&ensp;
+      <Link to="/signup">
+             Sign Up
+      </Link>
+      </div> 
+      
     </div>
   );
 };

@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 const Signup = (props) => {
   let navigate = useNavigate();
-  const [credentials, setCredentials] = useState({ name:"", email: "", password: ""});
+  const [credentials, setCredentials] = useState({ name:"", email: "", password: "",cpassword:""});
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(credentials.password!==credentials.cpassword){
+      props.showAlert("password and confirm password doesnot match","danger")
+      return;
+    }
     const response = await fetch("http://localhost:5000/api/auth/createUser", {
       method: "POST",
       headers: {
@@ -21,9 +25,9 @@ const Signup = (props) => {
     console.log(json);
     if(json.success){
       //Save the auth token and redirect
-       localStorage.setItem('token',json.authtoken)
+       localStorage.setItem('token',json.authToken)
        props.showAlert("Succesfully signed up","success")
-       navigate("/")
+       navigate('/')
     }
     else{
       props.showAlert("Invalid Credentials","danger")
@@ -34,7 +38,8 @@ const Signup = (props) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
   return (
-    <div>
+    <div className="container" style={{maxWidth:'500px'}}>
+      <h1 className="mb-5">New here?</h1>
       <form onSubmit={handleSubmit}>
       <div className="mb-3">
           <label htmlFor="email" className="form-label">
@@ -97,9 +102,15 @@ const Signup = (props) => {
         </div>
         {/* || (credentials.password!==credentials.cpassword) */}
         <button disabled={credentials.password.length<5 || credentials.name.length<3 } type="submit" className="btn btn-primary">
-          Submit
+          Sign up
         </button>
       </form>
+      <div className="mt-4">Already have an account ?&ensp;
+      <Link to="/login">
+          Login
+      </Link>
+      </div>
+      
     </div>
   );
 };

@@ -4,6 +4,8 @@ const NoteState = (props) => {
   const host = "http://localhost:5000";
   const notesInitial = [];
   const [notes, setNotes] = useState(notesInitial);
+  // const token= localStorage.getItem('token');
+  // console.log("authtoken "+);
 
 //function to fetch all note
 const fetchNote = async () => {
@@ -18,8 +20,9 @@ const fetchNote = async () => {
   });
   const json = await response.json();
   setNotes(json);
-  // console.log(json);
+ // console.log('ffff');
 };
+
 
   //function to add note
   const addNote = async (title, description, tag) => {
@@ -29,8 +32,8 @@ const fetchNote = async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          localStorage.getItem('token')
+        "auth-token":localStorage.getItem('token')
+          
       },
       body: JSON.stringify({ title, description, tag }),
     });
@@ -44,8 +47,7 @@ const fetchNote = async () => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          localStorage.getItem('token')
+        "auth-token":localStorage.getItem('token')
       }
     });
     // eslint-disable-next-line
@@ -65,14 +67,12 @@ const fetchNote = async () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          localStorage.getItem('token')
+        "auth-token": localStorage.getItem('token')
       },
       body: JSON.stringify({ title, description, tag }),
     });
     // eslint-disable-next-line
     const json = await response.json();
-    // console.log(json)
     let newNotes = JSON.parse(JSON.stringify(notes));
     //Logic to edit in the client
     for (let i = 0; i < newNotes.length; i++) {
