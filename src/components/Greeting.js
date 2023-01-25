@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from 'react'
 
 function Greeting() {
-    const host = "http://localhost:5000";
+    const host = "https://inotebook-backend-dhritiraj.onrender.com";
     const [name, setName] = useState("User")
     const getname = async () => {
         // console.log("Fetching the user details");
