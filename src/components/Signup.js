@@ -3,14 +3,15 @@ import {Link, useNavigate } from "react-router-dom";
 const Signup = (props) => {
   let navigate = useNavigate();
   const [credentials, setCredentials] = useState({ name:"", email: "", password: "",cpassword:""});
-  
+  const host = "https://inotebook-backend-dhritiraj.onrender.com";
   const handleSubmit = async (e) => {
     e.preventDefault();
     if(credentials.password!==credentials.cpassword){
       props.showAlert("password and confirm password doesnot match","danger")
       return;
     }
-    const response = await fetch("http://localhost:5000/api/auth/createUser", {
+   
+    const response = await fetch(`${host}/api/auth/createUser`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
